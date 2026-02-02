@@ -8,10 +8,6 @@ include:
   - resources/*.yml
   - resources/*/*.yml
 
-sync:
-  exclude:
-    - tests/archive/**
-
 targets:
   dev:
     # The default target uses 'mode: development' to create a development copy.
@@ -22,6 +18,21 @@ targets:
     default: true
     workspace:
       host: https://e2-demo-field-eng.cloud.databricks.com
+    resources:
+      jobs:
+        integration_test_job:
+          name: "dab-demo-integration-test-job"
+          tasks:
+            - task_key: run_integration_test
+              job_cluster_key: test_cluster
+              spark_python_task:
+                python_file: ./src/my_package/integration_test.py
+          job_clusters:
+            - job_cluster_key: test_cluster
+              new_cluster:
+                spark_version: "15.4.x-scala2.12"
+                node_type_id: "i3.xlarge"
+                num_workers: 1
 
   prod:
     mode: production
@@ -29,6 +40,7 @@ targets:
       host: https://e2-demo-field-eng.cloud.databricks.com
       # We explicitly deploy to /Workspace/Users/eric.liou@databricks.com to make sure we only have a single copy.
       root_path: /Workspace/Users/eric.liou@databricks.com/.bundle/${bundle.name}/${bundle.target}
-    permissions:
-      - user_name: eric.liou@databricks.com
-        level: CAN_MANAGE
+    sync:
+      exclude:
+        - tests
+        - src/my_package/integration_test.py
