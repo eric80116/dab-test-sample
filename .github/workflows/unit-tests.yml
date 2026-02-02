@@ -27,4 +27,4 @@ jobs:
 
       - name: Run unit tests
         run: |
-          pytest tests/unit -v --cov=src
+          pytest tests/unit/ -v --cov=src
