@@ -1,12 +1,16 @@
 # This is a Databricks asset bundle definition for ericliou_project.
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
-  name: ericliou_project
+  name: dab_test_sample
   uuid: 76692c3c-f250-430f-b1d6-f5799ee83c8c
 
 include:
   - resources/*.yml
   - resources/*/*.yml
+
+sync:
+  exclude:
+    - tests/archive/**
 
 targets:
   dev:

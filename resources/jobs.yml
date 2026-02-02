@@ -1,0 +1,29 @@
+resources:
+  jobs:
+    main_job:
+      name: "dab-demo-main-job"
+      tasks:
+        - task_key: run_main
+          job_cluster_key: main_cluster
+          spark_python_task:
+            python_file: ../src/my_package/pipeline.py
+      job_clusters:
+        - job_cluster_key: main_cluster
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
+
+    integration_test_job:
+      name: "dab-demo-integration-test-job"
+      tasks:
+        - task_key: run_integration_test
+          job_cluster_key: test_cluster
+          spark_python_task:
+            python_file: ../src/my_package/integration_test.py
+      job_clusters:
+        - job_cluster_key: test_cluster
+          new_cluster:
+            spark_version: "15.4.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
